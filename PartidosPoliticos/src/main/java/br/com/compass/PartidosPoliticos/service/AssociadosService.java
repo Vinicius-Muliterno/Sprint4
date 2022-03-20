@@ -17,7 +17,6 @@ import br.com.compass.PartidosPoliticos.repositorys.AssociadosRepository;
 import br.com.compass.PartidosPoliticos.repositorys.PartidosRepository;
 import br.com.compass.PartidosPoliticos.service.exception.MethodArgumentNotValidException;
 
-
 @Service
 public class AssociadosService {
 
@@ -35,7 +34,7 @@ public class AssociadosService {
 		return associadosRepository.findAll();
 	}
 
-	public Associados findById(Long id) {
+	public Associados findById(long id) {
 		return associadosRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("O ID " + id + " não foi encontrado."));
 	}
@@ -59,19 +58,19 @@ public class AssociadosService {
 	}
 
 	public Associados updateById(Long id, @Valid Associados associado) {
-		Associados associadoParaAtualizar = findById(id);
+		Associados atualizarAssociado = findById(id);
 		try {
-			associadoParaAtualizar.setNome(associado.getNome());
-			associadoParaAtualizar.setCargosPoliticos(associado.getCargosPoliticos());
-			associadoParaAtualizar.setDataNascimento(associado.getDataNascimento());
-			associadoParaAtualizar.setSexo(associado.getSexo());
-			return associadoParaAtualizar;
+			atualizarAssociado.setNome(associado.getNome());
+			atualizarAssociado.setCargosPoliticos(associado.getCargosPoliticos());
+			atualizarAssociado.setDataNascimento(associado.getDataNascimento());
+			atualizarAssociado.setSexo(associado.getSexo());
+			return atualizarAssociado;
 		} catch (MethodArgumentNotValidException e) {
 			throw new MethodArgumentNotValidException(e.getMessage());
 		}
 	}
 
-	public void deleteById(Long id) {
+	public void deleteById(long id) {
 		findById(id);
 		associadosRepository.deleteById(id);
 	}
@@ -87,6 +86,7 @@ public class AssociadosService {
 			throw new EntityNotFoundException("O associado com ID " + idAssociado + " não foi encontrado no Partido de ID " + idPartido);	
 		}
 	}
+
 }
 	
 

@@ -18,10 +18,12 @@ import br.com.compass.PartidosPoliticos.dto.AssociadoComPartidoDto;
 import br.com.compass.PartidosPoliticos.entities.enums.CargosPoliticos;
 import br.com.compass.PartidosPoliticos.entities.enums.Sexo;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
