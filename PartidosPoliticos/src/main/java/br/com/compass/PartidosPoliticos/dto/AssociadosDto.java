@@ -1,17 +1,15 @@
 package br.com.compass.PartidosPoliticos.dto;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 
+import lombok.Data;
+
+@Data
 public class AssociadosDto {
 	
-	private Long id;
-	
-	private String nomeAssociado;
-	
-	private String cargoPolitico; // Vereador, Prefeito, Deputado Estadual, Deputado Federal, Senador, Governador, Presidente e Nenhum
-	
-	private LocalDate dataNascimento;
-	
-	private String sexo; // masculino, feminino
+	@NotNull
+	private Long idAssociado;
+	@NotNull
+	private Long idPartido;
 
 }

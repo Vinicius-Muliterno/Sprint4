@@ -1,88 +1,78 @@
 package br.com.compass.PartidosPoliticos.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import br.com.compass.PartidosPoliticos.dto.PartidosDto;
+// import br.com.compass.PartidosPoliticos.dto.PartidosDto;
+import br.com.compass.PartidosPoliticos.entities.enums.Ideologia;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity 
 @Data
-@Entity (name = "partido")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table (name = "partidos")
 public class Partidos {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@NotNull 
+	@NotEmpty
 	private String nomePartido;
 	
+	@NotNull 
+	@NotEmpty
 	private String sigla;
 	
-	private String ideologia; // Direita, Centro e Esquerda
+	@NotNull 
+	@Enumerated(EnumType.STRING)
+	private Ideologia ideologia; // Direita, Centro e Esquerda
 	
+	@NotNull 
+	@NotEmpty
 	private LocalDate dataDeFundacao;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "idPartido")
+	private List<Associados> associados = new ArrayList<Associados>();
 	
-	@SuppressWarnings("unused")
-	public Partidos() {
+	public void addAssociado(Associados associado) {
+		associados.add(associado);
+	}
+	public void removeAssociado(Associados associado) {
+		associados.remove(associado);
+	}
 	
+	public boolean procurarAssociado(Associados associado) {
+		return associados.contains(associado);
 	}
 	
 	
-	
-	public Partidos(Long id, String nomePartido, String sigla, String ideologia, LocalDate dataDeFundacao) {
+	public PartidosDto converter(Partidos partido) {
+		return new PartidosDto(partido);
+	}
+	public Partidos(@Valid PartidosDto partidoDto) {
 		
-		this.id = id;
-		this.nomePartido = nomePartido;
-		this.sigla = sigla;
-		this.ideologia = ideologia;
-		this.dataDeFundacao = dataDeFundacao;
-	}	
-
-	public Long getId() {
-		return id;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getNomePartido() {
-		return nomePartido;
-	}
-
-	public void setNomePartido(String nomePartido) {
-		this.nomePartido = nomePartido;
-	}
-
-	public String getSigla() {
-		return sigla;
-	}
-
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
-	}
-
-	public String getIdeologia() {
-		return ideologia;
-	}
-
-	public void setIdeologia(String ideologia) {
-		this.ideologia = ideologia;
-	}
-
-	public LocalDate getDataDeFundacao() {
-		return dataDeFundacao;
-	}
-
-	public void setDataDeFundacao(LocalDate dataDeFundacao) {
-		this.dataDeFundacao = dataDeFundacao;
-	}
-	
-	
-	
+		
 }
