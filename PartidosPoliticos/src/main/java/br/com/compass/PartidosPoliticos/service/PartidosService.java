@@ -58,13 +58,13 @@ public class PartidosService {
 	}
 
 	public PartidosDto updateById(Long id, @Valid PartidosDto partidoDTO) {
-		Partidos partidoParaAtualizar = findByPartido(id);
+		Partidos atualizarPartido = findByPartido(id);
 		try {
-			partidoParaAtualizar.setNomePartido(partidoDTO.getNomePartido());
-			partidoParaAtualizar.setSigla(partidoDTO.getSigla());
-			partidoParaAtualizar.setIdeologia(partidoDTO.getIdeologia());
-			partidoParaAtualizar.setDataDeFundacao(partidoDTO.getDataDeFundacao());
-			return new PartidosDto(partidoParaAtualizar);
+			atualizarPartido.setNomePartido(partidoDTO.getNomePartido());
+			atualizarPartido.setSigla(partidoDTO.getSigla());
+			atualizarPartido.setIdeologia(partidoDTO.getIdeologia());
+			atualizarPartido.setDataDeFundacao(partidoDTO.getDataDeFundacao());
+			return new PartidosDto(atualizarPartido);
 		} catch (MethodArgumentNotValidException e) {
 			throw new MethodArgumentNotValidException(e.getMessage());
 		}

@@ -18,12 +18,10 @@ import br.com.compass.PartidosPoliticos.dto.AssociadoComPartidoDto;
 import br.com.compass.PartidosPoliticos.entities.enums.CargosPoliticos;
 import br.com.compass.PartidosPoliticos.entities.enums.Sexo;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,7 +43,7 @@ public class Associados {
 	private CargosPoliticos cargosPoliticos; // Vereador, Prefeito, Deputado_Estadual, Deputado_Federal, Senador, Governador, Presidente e Nenhum
 	
 	@NotNull
-	@JsonFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dataNascimento;
 	
 	@NotNull

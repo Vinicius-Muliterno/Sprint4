@@ -28,35 +28,34 @@ import br.com.compass.PartidosPoliticos.repositorys.PartidosRepository;
 import br.com.compass.PartidosPoliticos.service.exception.EntityNotFoundException;
 import br.com.compass.PartidosPoliticos.service.exception.MethodArgumentNotValidException;
 
-
 @SpringBootTest
 public class AssociadosServiceTest {
 
 	@InjectMocks
 	private AssociadosService service;
-	
+
 	@Mock
 	private AssociadosRepository repository;
-	
+
 	@Mock
 	private PartidosRepository partidoRepository;
-	
+
 	@Mock
 	private Associados associado;
-	
+
 	@Mock
 	private AssociadosDto associadosDto;
-	
+
 	@Mock
-	private AssociadoComPartidoDto associadoComPartidoDTO;
-	
+	private AssociadoComPartidoDto associadoComPartidoDto;
+
 	private Optional<Associados> optionalAssociado;
-	
+
 	private Optional<Partidos> optionalPartido;
-	
+
 	@Mock
 	private Partidos partido;
-	
+
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
@@ -72,7 +71,7 @@ public class AssociadosServiceTest {
 	void deveriaRetornarUmaListaDeAssociadoAoPassarCargoPolitico() {
 		Mockito.when(repository.findByCargosPoliticos(Mockito.any())).thenReturn(List.of(associado));
 		List<Associados> response = service.findByCargoPolitico(CargosPoliticos.PRESIDENTE);
-		
+
 		assertNotNull(response);
 		assertEquals(Associados.class, response.get(0).getClass());
 		assertEquals(1, response.get(0).getId());
@@ -80,12 +79,12 @@ public class AssociadosServiceTest {
 		assertEquals(CargosPoliticos.PRESIDENTE, response.get(0).getCargosPoliticos());
 		assertEquals(Sexo.FEMININO, response.get(0).getSexo());
 	}
-	
+
 	@Test
 	void deveriaRetornarUmaListaDeAssociadoFindAll() {
 		Mockito.when(repository.findAll()).thenReturn(List.of(associado));
 		List<Associados> response = service.findAll();
-		
+
 		assertNotNull(response);
 		assertEquals(Associados.class, response.get(0).getClass());
 		assertEquals(1, response.get(0).getId());
@@ -93,12 +92,12 @@ public class AssociadosServiceTest {
 		assertEquals(CargosPoliticos.PRESIDENTE, response.get(0).getCargosPoliticos());
 		assertEquals(Sexo.FEMININO, response.get(0).getSexo());
 	}
-	
+
 	@Test
 	void deveriaRetornarUmAssociadoAoPassarId() {
-		Mockito.when(repository.findById( Mockito.anyLong())).thenReturn(optionalAssociado);
+		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(optionalAssociado);
 		Associados response = service.findById(1);
-		
+
 		assertNotNull(response);
 		assertEquals(Associados.class, response.getClass());
 		assertEquals(1, response.getId());
@@ -106,38 +105,38 @@ public class AssociadosServiceTest {
 		assertEquals(CargosPoliticos.PRESIDENTE, response.getCargosPoliticos());
 		assertEquals(Sexo.FEMININO, response.getSexo());
 	}
-	
+
 	@Test
 	void deveriaRetornarEntityNotFoundException() {
 		Mockito.when(repository.findById(Mockito.anyLong()))
-		.thenThrow(new EntityNotFoundException("ID não encontrado."));
-		
+				.thenThrow(new EntityNotFoundException("Id não encontrado."));
+
 		try {
 			service.findById(1);
-		} catch(EntityNotFoundException e) {
+		} catch (EntityNotFoundException e) {
 			assertEquals(EntityNotFoundException.class, e.getClass());
-			assertEquals("ID não encontrado.", e.getMessage());
+			assertEquals("Id não foi encontrado.", e.getMessage());
 		}
 	}
-	
+
 	@Test
 	void deveriaRetornarMethodArgumentNotValidException() {
 		Mockito.when(repository.findById(Mockito.anyLong()))
-		.thenThrow(new MethodArgumentNotValidException("Dados inválidos."));
+				.thenThrow(new MethodArgumentNotValidException("Dados inválidos."));
 		try {
 			service.updateById((long) 1, associado);
-		} catch(MethodArgumentNotValidException e) {
+		} catch (MethodArgumentNotValidException e) {
 			assertEquals(MethodArgumentNotValidException.class, e.getClass());
 			assertEquals("Dados inválidos.", e.getMessage());
 		}
 	}
-	
+
 	@Test
 	void deveriaCriarUmNovoAssociado() {
 		Mockito.when(repository.save(Mockito.any())).thenReturn(associado);
-		
+
 		Associados response = service.save(associado);
-		
+
 		assertNotNull(response);
 		assertEquals(Associados.class, response.getClass());
 		assertEquals(1, response.getId());
@@ -145,27 +144,27 @@ public class AssociadosServiceTest {
 		assertEquals(CargosPoliticos.PRESIDENTE, response.getCargosPoliticos());
 		assertEquals(Sexo.FEMININO, response.getSexo());
 	}
-	
+
 	@Test
 	void deveriaAssociarAUmPartidoERetornarUmAssociadoComPartidoDto() {
 		Mockito.when(partidoRepository.findById(Mockito.anyLong())).thenReturn(optionalPartido);
 		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(optionalAssociado);
-	
+
 		AssociadoComPartidoDto response = service.associarPartido(associadosDto);
-		
+
 		assertNotNull(response);
 		assertEquals(AssociadoComPartidoDto.class, response.getClass());
 		assertEquals(1, response.getId());
 		assertEquals("NomeTeste", response.getNome());
 		assertEquals(CargosPoliticos.PRESIDENTE, response.getCargosPoliticos());
 	}
-	
+
 	@Test
 	void deveriaDeletarUmAssociadoComSucesso() {
 		Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(optionalAssociado);
 		Mockito.doNothing().when(repository).deleteById(Mockito.anyLong());
 		service.deleteById(1);
-		
+
 		Mockito.verify(repository, times(1)).deleteById(Mockito.anyLong());
 	}
 
@@ -187,21 +186,21 @@ public class AssociadosServiceTest {
 		associado.setSexo(Sexo.FEMININO);
 		associado.setDataNascimento(LocalDate.now());
 	}
-	
+
 	private void startAssociadoComPartidoDto() {
-		associadoComPartidoDTO = new AssociadoComPartidoDto();
-		associadoComPartidoDTO.setId((long) 1);
-		associadoComPartidoDTO.setNome("NomeTeste");
-		associadoComPartidoDTO.setCargosPoliticos(CargosPoliticos.PRESIDENTE);
-		associadoComPartidoDTO.setNomePartido("NomeTeste");
+		associadoComPartidoDto = new AssociadoComPartidoDto();
+		associadoComPartidoDto.setId((long) 1);
+		associadoComPartidoDto.setNome("NomeTeste");
+		associadoComPartidoDto.setCargosPoliticos(CargosPoliticos.PRESIDENTE);
+		associadoComPartidoDto.setNomePartido("NomeTeste");
 	}
-	
+
 	private void startAssociadosDto() {
 		associadosDto = new AssociadosDto();
 		associadosDto.setIdAssociado((long) 1);
 		associadosDto.setIdPartido((long) 1);
 	}
-	
+
 	private void startPartido() {
 		partido = new Partidos();
 		partido.setId((long) 1);
@@ -210,7 +209,7 @@ public class AssociadosServiceTest {
 		partido.setDataDeFundacao(LocalDate.now());
 		partido.setIdeologia(Ideologia.ESQUERDA);
 	}
-	
+
 	private void startOptionalPartido() {
 		partido = new Partidos();
 		partido.setId((long) 1);
